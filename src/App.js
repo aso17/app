@@ -1,25 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import UsersList from "./componensUser/UsersList";
+import FormUser from "./componensUser/FormUser";
+import FromEditUser from "./componensUser/FromEditUser";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container-fluid">
+      <Router>
+        <Routes>
+          <Route path="/" exact element={<UsersList />} />
+          <Route path="/createUser" element={<FormUser />} />
+          <Route path="editUser/:id" element={<FromEditUser />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
-
 export default App;
