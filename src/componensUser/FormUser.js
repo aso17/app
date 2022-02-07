@@ -36,7 +36,7 @@ const FormUser = () => {
       icon: "success",
       title: "Create users Success",
     });
-    history("/");
+    history("/users");
   };
 
   return (

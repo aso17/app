@@ -2,11 +2,19 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import DataTable from "react-data-table-component";
+import DataTableExtensions from "react-data-table-component-extensions";
+import "react-data-table-component-extensions/dist/index.css";
+import "../componensUser/UserList.css";
+
+import { columns } from "./Tables";
+
 const UsersList = () => {
   const [Users, setUsers] = useState([]);
   useEffect(() => {
     getUsers();
   }, []);
+
   const history = useNavigate();
   const getUsers = async () => {
     const users = await axios.get("http://localhost:8080/Users");
@@ -50,61 +58,26 @@ const UsersList = () => {
       }
     });
   };
+  const data = Users;
 
+  const tableData = {
+    columns,
+    data,
+  };
+  // console.log(columns);
+  // console.log(data);
   return (
-    <div className="row pt-3 d-flex justify-content-center">
-      <div className="col-md-11">
-        <div className="card p-2 ">
-          <div className="card-header">
-            <h1>Daftar Users</h1>
-          </div>
-          <div className="row">
-            <div className="col-md-12">
-              <div className="table-responsive-lg">
-                <Link to="/createUser" className="btn btn-sm btn-primary m-1 rounded-1">
-                  Create
-                </Link>
-                <table className="table table-border" border="1">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Username</th>
-                      <th scope="col">Nama Lengkap</th>
-                      <th scope="col">img</th>
-                      <th className="text-center">Options</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Users.map((user, index) => (
-                      <tr key={user.idUsers}>
-                        <th scope="row">{index + 1}</th>
-                        <td>{user.username}</td>
-                        <td>{user.namaLengkap}</td>
-                        <td>{user.foto}</td>
-                        <td className="text-center">
-                          <button
-                            onClick={() => {
-                              hapus(user.idUsers);
-                            }}
-                            className="btn btn-danger btn-sm  me-2  rounded-pill"
-                          >
-                            delete
-                          </button>
-                          <Link to={`/detail/${user.idUsers}`} className="btn btn-secondary btn-sm  me-2  rounded-pill">
-                            detail
-                          </Link>
-                          <Link to={`/editUser/${user.idUsers}`} className="btn btn-success btn-sm  me-2  rounded-pill">
-                            update
-                          </Link>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className="card p-2 bg-light">
+      <div className="card-header">
+        <h4>Daftar Users</h4>
+      </div>
+      <div className="main ">
+        <Link to={"/createUser"}>
+          <button className="btn btn-sm btn-dark mt-2">Tambah Users</button>
+        </Link>
+        <DataTableExtensions {...tableData}>
+          <DataTable columns={columns} data={data} noHeader defaultSortField="id" defaultSortAsc={true} pagination highlightOnHover dense />
+        </DataTableExtensions>
       </div>
     </div>
   );
